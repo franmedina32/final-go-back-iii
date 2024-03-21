@@ -43,9 +43,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `database_back_iii`.`turno`
+-- Table `database_back_iii`.`turnos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `database_back_iii`.`turno` (
+CREATE TABLE IF NOT EXISTS `database_back_iii`.`turnos` (
   `id` INT NOT NULL,
   `paciente` INT NULL DEFAULT NULL,
   `odontologo` INT NULL DEFAULT NULL,
