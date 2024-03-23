@@ -18,7 +18,7 @@ USE `database_back_iii` ;
 -- Table `database_back_iii`.`odontologos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `database_back_iii`.`odontologos` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NULL DEFAULT NULL,
   `apellido` VARCHAR(100) NULL DEFAULT NULL,
   `matricula` VARCHAR(100) NULL DEFAULT NULL,
@@ -31,7 +31,7 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `database_back_iii`.`pacientes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `database_back_iii`.`pacientes` (
-  `id` INT NOT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(100) NULL DEFAULT NULL,
   `apellido` VARCHAR(100) NULL DEFAULT NULL,
   `domicilio` VARCHAR(200) NULL DEFAULT NULL,
@@ -46,8 +46,8 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- Table `database_back_iii`.`turnos`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `database_back_iii`.`turnos` (
-  `id` INT NOT NULL,
-  `paciente` INT NULL DEFAULT NULL,
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `paciente` INT NULL,
   `odontologo` INT NULL DEFAULT NULL,
   `fecha` DATETIME NULL DEFAULT NULL,
   `descripcion` VARCHAR(500) NULL DEFAULT NULL,
