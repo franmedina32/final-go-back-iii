@@ -65,7 +65,7 @@ func (r *MySQLRepository) GetByMat(mat string) (domain.Odontologo, error) {
 	err := row.Scan(&o.ID, &o.Nombre, &o.Apellido, &o.Matricula)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return domain.Odontologo{}, fmt.Errorf("Odontologo with matricula %d not found", mat)
+			return domain.Odontologo{}, fmt.Errorf("Odontologo with matricula %s not found", mat)
 		}
 		return domain.Odontologo{}, err
 	}

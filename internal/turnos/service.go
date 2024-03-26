@@ -41,10 +41,10 @@ func (s service) CreateByUserDoc(dto CreateTurnoData) (domain.Turno, error) {
 	o, err := s.odontologoRepo.GetByMat(dto.OdontologoMatricula)
 	p, err2 := s.pacienteRepo.GetByDoc(dto.PacienteDocNumber)
 	if err != nil {
-		panic(err)
+		return domain.Turno{}, err
 	}
 	if err2 != nil {
-		panic(err2)
+		return domain.Turno{}, err2
 	}
 	t := domain.Turno{
 		OdontologoId: o.ID,

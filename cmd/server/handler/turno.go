@@ -4,9 +4,10 @@ import (
 	"final-go-back-III/internal/domain"
 	"final-go-back-III/internal/turnos"
 	"final-go-back-III/pkg/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type turnoHandler struct {
@@ -128,7 +129,7 @@ func (h *turnoHandler) Delete() gin.HandlerFunc {
 	}
 }
 
-func (h *turnoHandler) createByUserDoc(dto turnos.CreateTurnoData) gin.HandlerFunc {
+/*func (h *turnoHandler) createByUserDoc(dto turnos.CreateTurnoData) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var p domain.Turno
 		if err := c.BindJSON(&p); err != nil {
@@ -140,4 +141,4 @@ func (h *turnoHandler) createByUserDoc(dto turnos.CreateTurnoData) gin.HandlerFu
 		}
 		web.Success(c, http.StatusCreated, createdTurno)
 	}
-}
+}*/

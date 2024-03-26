@@ -58,7 +58,7 @@ func (r *MySQLRepository) GetByID(id int) (domain.Turno, error) {
 }
 
 func (r *MySQLRepository) Create(t domain.Turno) (domain.Turno, error) {
-	query := "INSERT INTO turnos (pacienteId, odontologoId, fecha, descripcion) VALUES (?, ?, ?, ?)"
+	query := "INSERT INTO turnos (id_paciente, id_odontologo, fecha, descripcion) VALUES (?, ?, ?, ?)"
 	result, err := r.db.Exec(query, t.PacienteId, t.OdontologoId, t.Fecha, t.Descripcion)
 	if err != nil {
 		return domain.Turno{}, err
@@ -72,7 +72,7 @@ func (r *MySQLRepository) Create(t domain.Turno) (domain.Turno, error) {
 }
 
 func (r *MySQLRepository) Update(id int, t domain.Turno) (domain.Turno, error) {
-	query := "UPDATE turnos SET PacienteId = ?, OdontologoId = ?, Fecha = ?, Descripcion = ?mWHERE id = ?"
+	query := "UPDATE turnos SET id_paciente = ?, id_odontologo = ?, fecha = ?, descripcion = ? WHERE id = ?"
 	_, err := r.db.Exec(query, t.PacienteId, t.OdontologoId, t.Fecha, t.Descripcion, id)
 	if err != nil {
 		return domain.Turno{}, err

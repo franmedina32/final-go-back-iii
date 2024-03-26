@@ -68,7 +68,7 @@ func (r *MySQLRepository) GetByDoc(doc string) (domain.Paciente, error) {
 	err := row.Scan(&paciente.ID, &paciente.Nombre, &paciente.Apellido, &paciente.Domicilio, &paciente.Dni, &paciente.FechaAlta)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return domain.Paciente{}, fmt.Errorf("Paciente with DOC %d not found", doc)
+			return domain.Paciente{}, fmt.Errorf("Paciente with DOC %s not found", doc)
 		}
 		return domain.Paciente{}, err
 	}
