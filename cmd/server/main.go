@@ -6,14 +6,16 @@ import (
 	"final-go-back-III/internal/paciente"
 	turnos2 "final-go-back-III/internal/turnos"
 	"final-go-back-III/pkg/db"
+	"final-go-back-III/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	//if err := godotenv.Load("../.././.env"); err != nil {
-	//	panic("Error loading .env file: " + err.Error())
-	//}
+	if err := godotenv.Load(".env"); err != nil {
+		panic("Error loading .env file: " + err.Error())
+	}
 
 	storage := db.StorageDB
 
@@ -37,30 +39,30 @@ func main() {
 	{
 		odontologos.GET("/all", odontologoHandler.GetAll())
 		odontologos.GET("/:id", odontologoHandler.GetByID())
-		odontologos.POST("/create", odontologoHandler.Create())
-		odontologos.PUT("/update/:id", odontologoHandler.Update())
-		odontologos.PATCH("/updateField/:id", odontologoHandler.UpdateField())
-		odontologos.DELETE("/delete/:id", odontologoHandler.Delete())
+		odontologos.POST("/create", middleware.Authentication(), odontologoHandler.Create())
+		odontologos.PUT("/update/:id", middleware.Authentication(), odontologoHandler.Update())
+		odontologos.PATCH("/updateField/:id", middleware.Authentication(), odontologoHandler.UpdateField())
+		odontologos.DELETE("/delete/:id", middleware.Authentication(), odontologoHandler.Delete())
 	}
 	pacientes := r.Group("/pacientes")
 	{
 		pacientes.GET("/all", pacienteHandler.GetAll())
 		pacientes.GET("/:id", pacienteHandler.GetByID())
-		pacientes.POST("/create", pacienteHandler.Create())
-		pacientes.PUT("/update/:id", pacienteHandler.Update())
-		pacientes.PATCH("/updateField/:id", pacienteHandler.UpdateField())
-		pacientes.DELETE("/delete/:id", pacienteHandler.Delete())
+		pacientes.POST("/create", middleware.Authentication(), pacienteHandler.Create())
+		pacientes.PUT("/update/:id", middleware.Authentication(), pacienteHandler.Update())
+		pacientes.PATCH("/updateField/:id", middleware.Authentication(), pacienteHandler.UpdateField())
+		pacientes.DELETE("/delete/:id", middleware.Authentication(), pacienteHandler.Delete())
 	}
 	turnos := r.Group("/turnos")
 	{
 		turnos.GET("/all", turnoHandler.GetAll())
 		turnos.GET("/:id", turnoHandler.GetByID())
 		turnos.GET("/dni", turnoHandler.GetByPacienteDNI())
-		turnos.POST("/create", turnoHandler.Create())
-		turnos.POST("/create/dniAndMatricula", turnoHandler.CreateByDniAndMatricula())
-		turnos.PUT("/update/:id", turnoHandler.Update())
-		turnos.PATCH("/updateField/:id", turnoHandler.UpdateField())
-		turnos.DELETE("/delete/:id", turnoHandler.Delete())
+		turnos.POST("/create", middleware.Authentication(), turnoHandler.Create())
+		turnos.POST("/create/dniAndMatricula", middleware.Authentication(), turnoHandler.CreateByDniAndMatricula())
+		turnos.PUT("/update/:id", middleware.Authentication(), turnoHandler.Update())
+		turnos.PATCH("/updateField/:id", middleware.Authentication(), turnoHandler.UpdateField())
+		turnos.DELETE("/delete/:id", middleware.Authentication(), turnoHandler.Delete())
 
 	}
 	r.Run(":8080")
