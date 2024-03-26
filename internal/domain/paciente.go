@@ -16,6 +16,15 @@ type Paciente struct {
 	FechaAlta CustomTime `json:"fecha_alta"`
 }
 
+type PacienteTurno struct {
+	ID        int        `json:"-"`
+	Nombre    string     `json:"nombre"`
+	Apellido  string     `json:"apellido"`
+	Domicilio string     `json:"domicilio"`
+	Dni       string     `json:"dni"`
+	FechaAlta CustomTime `json:"fecha_alta"`
+}
+
 type CustomTime struct {
 	time.Time
 }

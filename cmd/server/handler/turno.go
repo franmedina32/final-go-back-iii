@@ -45,6 +45,22 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+func (h *turnoHandler) GetByPacienteDNI() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		dni := c.Query("dni")
+		if dni == "" {
+			panic("DNI parameter is required")
+		}
+
+		turnoDetail, err := h.s.GetByPacienteDNI(dni)
+		if err != nil {
+			panic(err)
+		}
+
+		c.JSON(http.StatusOK, turnoDetail)
+	}
+}
+
 func (h *turnoHandler) Create() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var t domain.Turno
@@ -59,13 +75,13 @@ func (h *turnoHandler) Create() gin.HandlerFunc {
 	}
 }
 
-func (h *turnoHandler) CreateByUserDoc() gin.HandlerFunc {
+func (h *turnoHandler) CreateByDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var t turnos.CreateTurnoData
 		if err := c.BindJSON(&t); err != nil {
 			panic(err)
 		}
-		createdTurno, err := h.s.CreateByUserDoc(t)
+		createdTurno, err := h.s.CreateByDniAndMatricula(t)
 		if err != nil {
 			panic(err)
 		}

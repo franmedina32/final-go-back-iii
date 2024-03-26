@@ -10,6 +10,13 @@ type MySQLRepository struct {
 	db *sql.DB
 }
 
+type TurnoDetail struct {
+	Paciente    domain.PacienteTurno   `json:"paciente"`
+	Odontologo  domain.OdontologoTurno `json:"odontologo"`
+	Fecha       domain.CustomTime      `json:"fecha"`
+	Descripcion string                 `json:"descripcion"`
+}
+
 func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 	return &MySQLRepository{db}
 }
@@ -17,6 +24,7 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 type Repository interface {
 	GetAll() ([]domain.Turno, error)
 	GetByID(id int) (domain.Turno, error)
+	GetByPacienteDNI(dni string) (TurnoDetail, error)
 	Create(t domain.Turno) (domain.Turno, error)
 	Update(id int, p domain.Turno) (domain.Turno, error)
 	UpdateField(id int, fieldName string, value interface{}) error
@@ -55,6 +63,31 @@ func (r *MySQLRepository) GetByID(id int) (domain.Turno, error) {
 		return domain.Turno{}, err
 	}
 	return t, nil
+}
+
+func (r *MySQLRepository) GetByPacienteDNI(dni string) (TurnoDetail, error) {
+	query := `
+		SELECT p.nombre, p.apellido, p.domicilio, p.dni, p.fecha_alta, o.nombre, o.apellido, o.matricula, t.fecha, t.descripcion
+		FROM turnos t
+		JOIN pacientes p ON t.id_paciente = p.id
+		JOIN odontologos o ON t.id_odontologo = o.id
+		WHERE p.dni = ?
+		ORDER BY t.fecha DESC
+		LIMIT 1
+	`
+	row := r.db.QueryRow(query, dni)
+	var turno TurnoDetail
+
+	err := row.Scan(&turno.Paciente.Nombre, &turno.Paciente.Apellido, &turno.Paciente.Domicilio, &turno.Paciente.Dni,
+		&turno.Paciente.FechaAlta, &turno.Odontologo.Nombre, &turno.Odontologo.Apellido, &turno.Odontologo.Matricula,
+		&turno.Fecha, &turno.Descripcion)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return TurnoDetail{}, fmt.Errorf("No turno found for the provided DNI")
+		}
+		return TurnoDetail{}, err
+	}
+	return turno, nil
 }
 
 func (r *MySQLRepository) Create(t domain.Turno) (domain.Turno, error) {

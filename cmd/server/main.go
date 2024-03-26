@@ -54,11 +54,13 @@ func main() {
 	{
 		turnos.GET("/all", turnoHandler.GetAll())
 		turnos.GET("/:id", turnoHandler.GetByID())
+		turnos.GET("/dni", turnoHandler.GetByPacienteDNI())
 		turnos.POST("/create", turnoHandler.Create())
 		turnos.PUT("/update/:id", turnoHandler.Update())
 		turnos.PATCH("/updateField/:id", turnoHandler.UpdateField())
 		turnos.DELETE("/delete/:id", turnoHandler.Delete())
-		turnos.POST("/create/user/doc", turnoHandler.CreateByUserDoc())
+		turnos.POST("/create/dniAndMatricula", turnoHandler.CreateByDniAndMatricula())
+
 	}
 	r.Run(":8080")
 }
