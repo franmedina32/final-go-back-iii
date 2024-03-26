@@ -128,17 +128,3 @@ func (h *turnoHandler) Delete() gin.HandlerFunc {
 		web.Success(c, http.StatusOK, "Turno deleted successfully")
 	}
 }
-
-/*func (h *turnoHandler) createByUserDoc(dto turnos.CreateTurnoData) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		var p domain.Turno
-		if err := c.BindJSON(&p); err != nil {
-			panic(err)
-		}
-		createdTurno, err := h.s.CreateByUserDoc(dto)
-		if err != nil {
-			panic(err)
-		}
-		web.Success(c, http.StatusCreated, createdTurno)
-	}
-}*/
