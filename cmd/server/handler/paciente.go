@@ -4,10 +4,9 @@ import (
 	"final-go-back-III/internal/domain"
 	"final-go-back-III/internal/paciente"
 	"final-go-back-III/pkg/web"
+	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
-
-	"github.com/gin-gonic/gin"
 )
 
 type pacienteHandler struct {
