@@ -14,13 +14,14 @@ func NewMySQLRepository(db *sql.DB) *MySQLRepository {
 	return &MySQLRepository{db}
 }
 
-type Repository interface {
+type PacienteRepository interface {
 	GetAll() ([]domain.Paciente, error)
 	GetByID(id int) (domain.Paciente, error)
 	Create(p domain.Paciente) (domain.Paciente, error)
 	Update(id int, p domain.Paciente) (domain.Paciente, error)
 	UpdateField(id int, fieldName string, value interface{}) error
 	Delete(id int) error
+	GetByDoc(doc string) (domain.Paciente, error)
 }
 
 func (r *MySQLRepository) GetAll() ([]domain.Paciente, error) {
@@ -45,14 +46,29 @@ func (r *MySQLRepository) GetAll() ([]domain.Paciente, error) {
 }
 
 func (r *MySQLRepository) GetByID(id int) (domain.Paciente, error) {
-	query := "SELECT id, nombre, apellido, domicilio, dni, fecha_alta FROM pacientes WHERE id = ?"
+	query := "SELECT * FROM pacientes WHERE id = ?"
 	row := r.db.QueryRow(query, id)
 	var paciente domain.Paciente
 
 	err := row.Scan(&paciente.ID, &paciente.Nombre, &paciente.Apellido, &paciente.Domicilio, &paciente.Dni, &paciente.FechaAlta)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return domain.Paciente{}, fmt.Errorf("Paciente with ID %d not found", id)
+			return domain.Paciente{}, fmt.Errorf("Paciente with id %d not found", id)
+		}
+		return domain.Paciente{}, err
+	}
+	return paciente, nil
+}
+
+func (r *MySQLRepository) GetByDoc(doc string) (domain.Paciente, error) {
+	query := "SELECT * FROM pacientes WHERE dni = ?"
+	row := r.db.QueryRow(query, doc)
+	var paciente domain.Paciente
+
+	err := row.Scan(&paciente.ID, &paciente.Nombre, &paciente.Apellido, &paciente.Domicilio, &paciente.Dni, &paciente.FechaAlta)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return domain.Paciente{}, fmt.Errorf("Paciente with DOC %d not found", doc)
 		}
 		return domain.Paciente{}, err
 	}

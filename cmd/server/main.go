@@ -4,6 +4,7 @@ import (
 	"final-go-back-III/cmd/server/handler"
 	"final-go-back-III/internal/odontologo"
 	"final-go-back-III/internal/paciente"
+	turnos2 "final-go-back-III/internal/turnos"
 	"final-go-back-III/pkg/db"
 
 	"github.com/gin-gonic/gin"
@@ -24,6 +25,10 @@ func main() {
 	servicePaciente := paciente.NewService(repoPaciente)
 	pacienteHandler := handler.NewPacienteHandler(servicePaciente)
 
+	turnoRepo := turnos2.NewMySQLRepository(storage)
+	turnoService := turnos2.NewService(turnoRepo, repoPaciente, repo)
+	turnoHandler := handler.NewTurnoHandler(turnoService)
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
@@ -31,6 +36,10 @@ func main() {
 	odontologos := r.Group("/odontologos")
 	{
 		odontologos.GET("/all", odontologoHandler.GetAll())
+		odontologos.GET("/:id", odontologoHandler.GetByID())
+		odontologos.POST("/create", odontologoHandler.Create())
+		odontologos.PUT("/update/:id", odontologoHandler.Update())
+		odontologos.DELETE("/delete/:id", odontologoHandler.Delete())
 	}
 	pacientes := r.Group("/pacientes")
 	{
@@ -40,6 +49,16 @@ func main() {
 		pacientes.PUT("/update/:id", pacienteHandler.Update())
 		pacientes.PATCH("/updateField/:id", pacienteHandler.UpdateField())
 		pacientes.DELETE("/delete/:id", pacienteHandler.Delete())
+	}
+	turnos := r.Group("/turnos")
+	{
+		turnos.GET("/all", turnoHandler.GetAll())
+		turnos.GET("/:id", turnoHandler.GetByID())
+		turnos.POST("/create", turnoHandler.Create())
+		turnos.PUT("/update/:id", turnoHandler.Update())
+		turnos.PATCH("/updateField/:id", turnoHandler.UpdateField())
+		turnos.DELETE("/delete/:id", turnoHandler.Delete())
+		turnos.POST("/create/user/doc", turnoHandler.CreateByUserDoc())
 	}
 	r.Run(":8080")
 }

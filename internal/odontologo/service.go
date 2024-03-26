@@ -4,19 +4,17 @@ import "final-go-back-III/internal/domain"
 
 type Service interface {
 	GetAll() ([]domain.Odontologo, error)
-	//GetByID(id int) (domain.Odontologo, error)
-	//SearchPriceGt(price float64) []domain.Odontologo
-	//ConsumerPrice(list []int) ([]domain.Odontologo, float64, error)
-	//Create(p domain.Odontologo) (domain.Odontologo, error)
-	//Update(id int, p domain.Odontologo) (domain.Odontologo, error)
-	//Delete(id int) error
+	GetByID(id int) (domain.Odontologo, error)
+	Create(p domain.Odontologo) (domain.Odontologo, error)
+	Update(id int, p domain.Odontologo) (domain.Odontologo, error)
+	Delete(id int) error
 }
 
 type service struct {
-	r Repository
+	r OdontologoRepository
 }
 
-func NewService(r Repository) Service {
+func NewService(r OdontologoRepository) Service {
 	return &service{r}
 }
 
@@ -28,34 +26,34 @@ func (s service) GetAll() ([]domain.Odontologo, error) {
 	return odontologos, nil
 }
 
-//
-//func (s service) GetByID(id int) (domain.Odontologo, error) {
-//	TODO implement me
-//panic("implement me")
-//}
-//
-//func (s service) SearchPriceGt(price float64) []domain.Odontologo {
-//	TODO implement me
-//panic("implement me")
-//}
-//
-//func (s service) ConsumerPrice(list []int) ([]domain.Odontologo, float64, error) {
-//	TODO implement me
-//panic("implement me")
-//}
-//
-//func (s service) Create(p domain.Odontologo) (domain.Odontologo, error) {
-//	TODO implement me
-//panic("implement me")
-//}
-//
-//func (s service) Update(id int, p domain.Odontologo) (domain.Odontologo, error) {
-//	TODO implement me
-//panic("implement me")
-//}
-//
-//func (s service) Delete(id int) error {
-//	TODO implement me
-//panic("implement me")
-//}
-//
+func (s service) GetByID(id int) (domain.Odontologo, error) {
+	odontologo, err := s.r.GetByID(id)
+	if err != nil {
+		return domain.Odontologo{}, err
+	}
+	return odontologo, nil
+}
+
+func (s service) Create(o domain.Odontologo) (domain.Odontologo, error) {
+	createdOdontologo, err := s.r.Create(o)
+	if err != nil {
+		return domain.Odontologo{}, err
+	}
+	return createdOdontologo, nil
+}
+
+func (s service) Update(id int, o domain.Odontologo) (domain.Odontologo, error) {
+	updatedOdontologo, err := s.r.Update(id, o)
+	if err != nil {
+		return domain.Odontologo{}, err
+	}
+	return updatedOdontologo, nil
+}
+
+func (s service) Delete(id int) error {
+	err := s.r.Delete(id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
