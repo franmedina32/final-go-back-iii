@@ -19,6 +19,7 @@ type OdontologoRepository interface {
 	GetByID(id int) (domain.Odontologo, error)
 	Create(p domain.Odontologo) (domain.Odontologo, error)
 	Update(id int, p domain.Odontologo) (domain.Odontologo, error)
+	UpdateField(id int, fieldName string, value interface{}) error
 	Delete(id int) error
 	GetByMat(mat string) (domain.Odontologo, error)
 }
@@ -94,6 +95,15 @@ func (r *MySQLRepository) Update(id int, o domain.Odontologo) (domain.Odontologo
 		return domain.Odontologo{}, err
 	}
 	return o, nil
+}
+
+func (r *MySQLRepository) UpdateField(id int, fieldName string, value interface{}) error {
+	query := fmt.Sprintf("UPDATE odontologos SET %s = ? WHERE id = ?", fieldName)
+	_, err := r.db.Exec(query, value, id)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r *MySQLRepository) Delete(id int) error {

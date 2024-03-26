@@ -17,16 +17,16 @@ func main() {
 
 	storage := db.StorageDB
 
-	repo := odontologo.NewMySQLRepository(storage)
-	service := odontologo.NewService(repo)
-	odontologoHandler := handler.NewOdontologoHandler(service)
+	odontologoRepo := odontologo.NewMySQLRepository(storage)
+	odontologoService := odontologo.NewService(odontologoRepo)
+	odontologoHandler := handler.NewOdontologoHandler(odontologoService)
 
-	repoPaciente := paciente.NewMySQLRepository(storage)
-	servicePaciente := paciente.NewService(repoPaciente)
-	pacienteHandler := handler.NewPacienteHandler(servicePaciente)
+	pacienteRepo := paciente.NewMySQLRepository(storage)
+	pacienteService := paciente.NewService(pacienteRepo)
+	pacienteHandler := handler.NewPacienteHandler(pacienteService)
 
 	turnoRepo := turnos2.NewMySQLRepository(storage)
-	turnoService := turnos2.NewService(turnoRepo, repoPaciente, repo)
+	turnoService := turnos2.NewService(turnoRepo, pacienteRepo, odontologoRepo)
 	turnoHandler := handler.NewTurnoHandler(turnoService)
 
 	r := gin.Default()
@@ -39,6 +39,7 @@ func main() {
 		odontologos.GET("/:id", odontologoHandler.GetByID())
 		odontologos.POST("/create", odontologoHandler.Create())
 		odontologos.PUT("/update/:id", odontologoHandler.Update())
+		odontologos.PATCH("/updateField/:id", odontologoHandler.UpdateField())
 		odontologos.DELETE("/delete/:id", odontologoHandler.Delete())
 	}
 	pacientes := r.Group("/pacientes")
@@ -56,10 +57,10 @@ func main() {
 		turnos.GET("/:id", turnoHandler.GetByID())
 		turnos.GET("/dni", turnoHandler.GetByPacienteDNI())
 		turnos.POST("/create", turnoHandler.Create())
+		turnos.POST("/create/dniAndMatricula", turnoHandler.CreateByDniAndMatricula())
 		turnos.PUT("/update/:id", turnoHandler.Update())
 		turnos.PATCH("/updateField/:id", turnoHandler.UpdateField())
 		turnos.DELETE("/delete/:id", turnoHandler.Delete())
-		turnos.POST("/create/dniAndMatricula", turnoHandler.CreateByDniAndMatricula())
 
 	}
 	r.Run(":8080")

@@ -4,9 +4,10 @@ import (
 	"final-go-back-III/internal/domain"
 	"final-go-back-III/internal/odontologo"
 	"final-go-back-III/pkg/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type odontologoHandler struct {
@@ -75,6 +76,28 @@ func (h *odontologoHandler) Update() gin.HandlerFunc {
 			panic(err)
 		}
 		web.Success(c, http.StatusOK, updatedOdontologo)
+	}
+}
+
+func (h *odontologoHandler) UpdateField() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			panic(err)
+		}
+		var requestBody struct {
+			FieldName string      `json:"field_name"`
+			Value     interface{} `json:"value"`
+		}
+		if err := c.BindJSON(&requestBody); err != nil {
+			panic(err)
+		}
+		err = h.s.UpdateField(id, requestBody.FieldName, requestBody.Value)
+		if err != nil {
+			panic(err)
+		}
+		web.Success(c, http.StatusOK, "Field updated successfully")
 	}
 }
 
