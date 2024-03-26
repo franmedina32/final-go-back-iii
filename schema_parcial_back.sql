@@ -47,18 +47,18 @@ DEFAULT CHARACTER SET = utf8mb3;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `database_back_iii`.`turnos` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `paciente` INT NULL,
-  `odontologo` INT NULL DEFAULT NULL,
+  `id_paciente` INT NULL,
+  `id_odontologo` INT NULL DEFAULT NULL,
   `fecha` DATETIME NULL DEFAULT NULL,
-  `descripcion` VARCHAR(500) NULL DEFAULT NULL,
+  `descripcion` VARCHAR(1000) NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  INDEX `OT_idx` (`odontologo` ASC) VISIBLE,
-  INDEX `PT_idx` (`paciente` ASC) VISIBLE,
+  INDEX `OT_idx` (`id_odontologo` ASC) VISIBLE,
+  INDEX `PT_idx` (`id_paciente` ASC) VISIBLE,
   CONSTRAINT `OT`
-    FOREIGN KEY (`odontologo`)
+    FOREIGN KEY (`id_odontologo`)
     REFERENCES `database_back_iii`.`odontologos` (`id`),
   CONSTRAINT `PT`
-    FOREIGN KEY (`paciente`)
+    FOREIGN KEY (`id_paciente`)
     REFERENCES `database_back_iii`.`pacientes` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
