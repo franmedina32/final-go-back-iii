@@ -20,7 +20,7 @@ import (
 
 // @title Certified Tech Developer - Back End III
 // @version 1.0
-// @description This API handles Patients and Dentists.
+// @description This API handles Patients, Dentists and Turnos
 // @termsOfService https://developers.ctd.com.ar/es_ar/terminos-y-condiciones
 // @contact.name API Support
 // @contact.url https://developers.ctd.com.ar/support
