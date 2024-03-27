@@ -20,6 +20,13 @@ func NewTurnoHandler(s turnos.Service) *turnoHandler {
 	}
 }
 
+// GetAll godoc
+// @Summary Get all turnos
+// @Description Retrieve all turnos
+// @Tags Turno
+// @Produce json
+// @Success 200 {array} domain.Turno "OK"
+// @Router /turnos/all [get]
 func (h *turnoHandler) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		turnos, err := h.s.GetAll()
@@ -30,6 +37,14 @@ func (h *turnoHandler) GetAll() gin.HandlerFunc {
 	}
 }
 
+// GetByID godoc
+// @Summary Get a turno by ID
+// @Description Retrieve a turno by ID
+// @Tags Turno
+// @Produce json
+// @Param id path int true "Turno ID"
+// @Success 200 {object} domain.Turno "OK"
+// @Router /turnos/{id} [get]
 func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -45,6 +60,14 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+// GetByPacienteDNI godoc
+// @Summary Get turnos by paciente's DNI
+// @Description Retrieve turnos by paciente's DNI
+// @Tags Turno
+// @Produce json
+// @Param dni query string true "Paciente DNI"
+// @Success 200 {object} interface{} "OK"
+// @Router /turnos/byDNI [get]
 func (h *turnoHandler) GetByPacienteDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		dni := c.Query("dni")
@@ -61,6 +84,16 @@ func (h *turnoHandler) GetByPacienteDNI() gin.HandlerFunc {
 	}
 }
 
+// Create godoc
+// @Summary Create a new turno
+// @Description Create a new turno
+// @Tags Turno
+// @Accept json
+// @Produce json
+// @Param turno body domain.Turno true "Turno object"
+// @Param token header string true "TOKEN"
+// @Success 201 {object} domain.Turno "Created"
+// @Router /turnos/create [post]
 func (h *turnoHandler) Create() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var t domain.Turno
@@ -75,6 +108,16 @@ func (h *turnoHandler) Create() gin.HandlerFunc {
 	}
 }
 
+// CreateByDniAndMatricula godoc
+// @Summary Create a new turno by Paciente's DNI and Odontologo's Matricula
+// @Description Create a new turno by Paciente's DNI and Odontologo's Matricula
+// @Tags Turno
+// @Accept json
+// @Produce json
+// @Param turno body turnos.CreateTurnoData true "Turno data"
+// @Param token query string true "TOKEN"
+// @Success 201 {object} domain.Turno "Created"
+// @Router /turnos/createByDniAndMatricula [post]
 func (h *turnoHandler) CreateByDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var t turnos.CreateTurnoData
@@ -89,6 +132,16 @@ func (h *turnoHandler) CreateByDniAndMatricula() gin.HandlerFunc {
 	}
 }
 
+// Update godoc
+// @Summary Update an existing turno
+// @Description Update an existing turno
+// @Tags Turno
+// @Accept json
+// @Param id path int true "Turno ID"
+// @Param turno body domain.Turno true "Turno object"
+// @Param token header string true "TOKEN"
+// @Success 200 {object} domain.Turno "Updated"
+// @Router /turnos/update/{id} [put]
 func (h *turnoHandler) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -108,6 +161,18 @@ func (h *turnoHandler) Update() gin.HandlerFunc {
 	}
 }
 
+// UpdateField godoc
+// @Summary Update a specific field of a turno
+// @Description Update a specific field of a turno by ID
+// @Tags Turno
+// @Accept json
+// @Param id path int true "Turno ID"
+// @Param token query string true "Authentication Token"
+// @Param field_name body string true "Name of the field to update"
+// @Param value body string true "New value for the field"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Field updated successfully"
+// @Router /turnos/{id}/update-field [put]
 func (h *turnoHandler) UpdateField() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -130,6 +195,14 @@ func (h *turnoHandler) UpdateField() gin.HandlerFunc {
 	}
 }
 
+// Delete godoc
+// @Summary Delete a turno
+// @Description Delete a turno by ID
+// @Tags Turno
+// @Param id path int true "Turno ID"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Turno deleted successfully"
+// @Router /turnos/{id} [delete]
 func (h *turnoHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"final-go-back-III/cmd/server/docs"
 	"final-go-back-III/cmd/server/handler"
 	"final-go-back-III/internal/odontologo"
 	"final-go-back-III/internal/paciente"
@@ -8,15 +9,29 @@ import (
 	"final-go-back-III/pkg/db"
 	"final-go-back-III/pkg/middleware"
 
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
+// @title Certified Tech Developer - Back End III
+// @version 1.0
+// @description This API handles Patients and Dentists.
+// @termsOfService https://developers.ctd.com.ar/es_ar/terminos-y-condiciones
+// @contact.name API Support
+// @contact.url https://developers.ctd.com.ar/support
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 func main() {
 	if err := godotenv.Load(".env"); err != nil {
 		panic("Error loading .env file: " + err.Error())
 	}
 
+	_ = godotenv.Load()
 	storage := db.StorageDB
 
 	odontologoRepo := odontologo.NewMySQLRepository(storage)
@@ -32,6 +47,11 @@ func main() {
 	turnoHandler := handler.NewTurnoHandler(turnoService)
 
 	r := gin.Default()
+
+	docs.SwaggerInfo.Host = os.Getenv("HOST")
+	r.GET("/docs/*any",
+		ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.String(200, "pong")
 	})
