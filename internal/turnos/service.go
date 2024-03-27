@@ -83,7 +83,7 @@ func (s service) CreateByDniAndMatricula(dto CreateTurnoData) (domain.Turno, err
 		OdontologoId: o.ID,
 		PacienteId:   p.ID,
 		Fecha:        dto.Fecha,
-		Descripcion:  dto.Descripcion,
+		//Descripcion:  dto.Descripcion,
 	}
 	return s.turnoRepo.Create(t)
 }

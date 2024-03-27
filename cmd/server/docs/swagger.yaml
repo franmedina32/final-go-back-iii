@@ -8,7 +8,7 @@ definitions:
         example: 1
         type: integer
       matricula:
-        example: "12345678"
+        example: 987654321M
         type: string
       nombre:
         example: John
@@ -57,7 +57,7 @@ definitions:
     properties:
       field_name:
         description: Field name to update
-        example: name
+        example: nombre
         type: string
       value:
         description: New value for the field
@@ -70,13 +70,13 @@ definitions:
         example: string
         type: string
       dni:
-        example: "525424"
+        example: "123456789"
         type: string
       fecha:
         example: "2006-01-02 15:04:05"
         type: string
       matricula:
-        example: FSDFSDDFS
+        example: 987654321M
         type: string
     type: object
 info:

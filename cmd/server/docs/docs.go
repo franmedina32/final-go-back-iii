@@ -765,7 +765,7 @@ const docTemplate = `{
                 },
                 "matricula": {
                     "type": "string",
-                    "example": "12345678"
+                    "example": "987654321M"
                 },
                 "nombre": {
                     "type": "string",
@@ -833,7 +833,7 @@ const docTemplate = `{
                 "field_name": {
                     "description": "Field name to update",
                     "type": "string",
-                    "example": "name"
+                    "example": "nombre"
                 },
                 "value": {
                     "description": "New value for the field",
@@ -851,7 +851,7 @@ const docTemplate = `{
                 },
                 "dni": {
                     "type": "string",
-                    "example": "525424"
+                    "example": "123456789"
                 },
                 "fecha": {
                     "type": "string",
@@ -859,7 +859,7 @@ const docTemplate = `{
                 },
                 "matricula": {
                     "type": "string",
-                    "example": "FSDFSDDFS"
+                    "example": "987654321M"
                 }
             }
         }
