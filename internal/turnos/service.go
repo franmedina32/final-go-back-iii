@@ -24,8 +24,8 @@ type service struct {
 }
 
 type CreateTurnoData struct {
-	PacienteDocNumber   string `json:"dni" example:"525424"`
-	OdontologoMatricula string `json:"matricula" example:"FSDFSDDFS"`
+	PacienteDocNumber   string `json:"dni" example:"123456789"`
+	OdontologoMatricula string `json:"matricula" example:"987654321M"`
 	Descripcion         string `json:"descripcion" example:"string"`
 	Fecha               string `json:"fecha" example:"2006-01-02 15:04:05"`
 }
