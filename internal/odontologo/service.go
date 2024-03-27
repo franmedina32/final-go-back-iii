@@ -7,6 +7,7 @@ type Service interface {
 	GetByID(id int) (domain.Odontologo, error)
 	Create(p domain.Odontologo) (domain.Odontologo, error)
 	Update(id int, p domain.Odontologo) (domain.Odontologo, error)
+	UpdateField(id int, fieldName string, value interface{}) error
 	Delete(id int) error
 }
 
@@ -48,6 +49,14 @@ func (s service) Update(id int, o domain.Odontologo) (domain.Odontologo, error) 
 		return domain.Odontologo{}, err
 	}
 	return updatedOdontologo, nil
+}
+
+func (s service) UpdateField(id int, fieldName string, value interface{}) error {
+	err := s.r.UpdateField(id, fieldName, value)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s service) Delete(id int) error {

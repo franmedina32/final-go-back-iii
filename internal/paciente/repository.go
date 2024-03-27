@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"final-go-back-III/internal/domain"
 	"fmt"
+	"time"
 )
 
 type MySQLRepository struct {
@@ -34,12 +35,13 @@ func (r *MySQLRepository) GetAll() ([]domain.Paciente, error) {
 	var pacientes []domain.Paciente
 	for rows.Next() {
 		var o domain.Paciente
-		var fechaAltaCustom domain.CustomTime
-		err := rows.Scan(&o.ID, &o.Nombre, &o.Apellido, &o.Domicilio, &o.Dni, &fechaAltaCustom)
+		var fechaAltaStr string // Change the type to string
+		err := rows.Scan(&o.ID, &o.Nombre, &o.Apellido, &o.Domicilio, &o.Dni, &fechaAltaStr)
 		if err != nil {
 			return nil, err
 		}
-		o.FechaAlta = fechaAltaCustom
+		// Assign the string representation of datetime directly to FechaAlta
+		o.FechaAlta = fechaAltaStr
 		pacientes = append(pacientes, o)
 	}
 	return pacientes, nil
@@ -68,7 +70,7 @@ func (r *MySQLRepository) GetByDoc(doc string) (domain.Paciente, error) {
 	err := row.Scan(&paciente.ID, &paciente.Nombre, &paciente.Apellido, &paciente.Domicilio, &paciente.Dni, &paciente.FechaAlta)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return domain.Paciente{}, fmt.Errorf("Paciente with DOC %d not found", doc)
+			return domain.Paciente{}, fmt.Errorf("Paciente with DOC %s not found", doc)
 		}
 		return domain.Paciente{}, err
 	}
@@ -76,7 +78,12 @@ func (r *MySQLRepository) GetByDoc(doc string) (domain.Paciente, error) {
 }
 
 func (r *MySQLRepository) Create(p domain.Paciente) (domain.Paciente, error) {
-	fechaAltaTime := p.FechaAlta.Time
+	// Convert string value to time.Time in the expected datetime format for the SQL query
+	fechaAltaTime, err := time.Parse("2006-01-02 15:04:05", p.FechaAlta)
+	if err != nil {
+		return domain.Paciente{}, err
+	}
+
 	query := "INSERT INTO pacientes (nombre, apellido, domicilio, dni, fecha_alta) VALUES (?, ?, ?, ?, ?)"
 	result, err := r.db.Exec(query, p.Nombre, p.Apellido, p.Domicilio, p.Dni, fechaAltaTime)
 	if err != nil {
@@ -88,6 +95,7 @@ func (r *MySQLRepository) Create(p domain.Paciente) (domain.Paciente, error) {
 		return domain.Paciente{}, err
 	}
 	p.ID = int(id)
+
 	return p, nil
 }
 

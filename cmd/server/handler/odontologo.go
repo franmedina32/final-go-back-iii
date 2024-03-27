@@ -4,9 +4,10 @@ import (
 	"final-go-back-III/internal/domain"
 	"final-go-back-III/internal/odontologo"
 	"final-go-back-III/pkg/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type odontologoHandler struct {
@@ -19,6 +20,13 @@ func NewOdontologoHandler(s odontologo.Service) *odontologoHandler {
 	}
 }
 
+// GetAll godoc
+// @Summary Get all odontologos
+// @Description Retrieve all odontologos
+// @Tags Odontologo
+// @Produce json
+// @Success 200 {array} domain.Odontologo "OK"
+// @Router /odontologos/all [get]
 func (h *odontologoHandler) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		odontologos, err := h.s.GetAll()
@@ -29,6 +37,14 @@ func (h *odontologoHandler) GetAll() gin.HandlerFunc {
 	}
 }
 
+// GetByID godoc
+// @Summary Get an odontologo by ID
+// @Description Retrieve an odontologo by ID
+// @Tags Odontologo
+// @Produce json
+// @Param id path int true "Odontologo ID"
+// @Success 200 {object} domain.Odontologo "OK"
+// @Router /odontologos/{id} [get]
 func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -44,6 +60,16 @@ func (h *odontologoHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+// Create godoc
+// @Summary Create a new odontologo
+// @Description Create a new odontologo
+// @Tags Odontologo
+// @Accept json
+// @Produce json
+// @Param odontologo body domain.Odontologo true "Odontologo object"
+// @Param token header string true "TOKEN"
+// @Success 201 {object} domain.Odontologo "Created"
+// @Router /odontologos/create [post]
 func (h *odontologoHandler) Create() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var p domain.Odontologo
@@ -59,6 +85,17 @@ func (h *odontologoHandler) Create() gin.HandlerFunc {
 	}
 }
 
+// Update godoc
+// @Summary Update an existing odontologo
+// @Description Update an existing odontologo
+// @Tags Odontologo
+// @Accept json
+// @Produce json
+// @Param id path int true "Odontologo ID"
+// @Param odontologo body domain.Odontologo true "Odontologo object"
+// @Param token header string true "TOKEN"
+// @Success 200 {object} domain.Odontologo "Updated"
+// @Router /odontologos/update/{id} [put]
 func (h *odontologoHandler) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -78,6 +115,47 @@ func (h *odontologoHandler) Update() gin.HandlerFunc {
 	}
 }
 
+// UpdateField godoc
+// @Summary Update a specific field of an odontologo
+// @Description Update a specific field of an odontologo
+// @Tags Odontologo
+// @Accept json
+// @Produce json
+// @Param id path int true "Odontologo ID"
+// @Param body body domain.UpdateFieldRequest true "Update Field Request"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Field updated successfully"
+// @Router /odontologos/update-field/{id} [patch]
+func (h *odontologoHandler) UpdateField() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		idStr := c.Param("id")
+		id, err := strconv.Atoi(idStr)
+		if err != nil {
+			panic(err)
+		}
+		var requestBody struct {
+			FieldName string      `json:"field_name"`
+			Value     interface{} `json:"value"`
+		}
+		if err := c.BindJSON(&requestBody); err != nil {
+			panic(err)
+		}
+		err = h.s.UpdateField(id, requestBody.FieldName, requestBody.Value)
+		if err != nil {
+			panic(err)
+		}
+		web.Success(c, http.StatusOK, "Field updated successfully")
+	}
+}
+
+// Delete godoc
+// @Summary Delete an odontologo
+// @Description Delete an odontologo by ID
+// @Tags Odontologo
+// @Param id path int true "Odontologo ID"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Odontologo deleted successfully"
+// @Router /odontologos/delete/{id} [delete]
 func (h *odontologoHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")

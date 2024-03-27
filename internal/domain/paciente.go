@@ -1,66 +1,49 @@
 package domain
 
 import (
-	"database/sql/driver"
-	"fmt"
-	"strings"
-	"time"
+	//"database/sql/driver"
+	"encoding/json"
 )
 
 type Paciente struct {
-	ID        int        `json:"id"`
-	Nombre    string     `json:"nombre"`
-	Apellido  string     `json:"apellido"`
-	Domicilio string     `json:"domicilio"`
-	Dni       string     `json:"dni"`
-	FechaAlta CustomTime `json:"fecha_alta"`
+	ID        int    `json:"id" example:"1"`
+	Nombre    string `json:"nombre" example:"John"`
+	Apellido  string `json:"apellido" example:"Doe"`
+	Domicilio string `json:"domicilio" example:"123 Main St"`
+	Dni       string `json:"dni" example:"12345678"`
+	FechaAlta string `json:"fecha_alta" example:"2006-01-02 15:04:05"`
 }
 
-type CustomTime struct {
-	time.Time
+type PacienteTurno struct {
+	ID        int    `json:"-"`
+	Nombre    string `json:"nombre" example:"John"`
+	Apellido  string `json:"apellido" example:"Doe"`
+	Domicilio string `json:"domicilio" example:"123 Main St"`
+	Dni       string `json:"dni" example:"12345678"`
+	FechaAlta string `json:"fecha_alta" example:"2006-01-02 15:04:05"`
 }
 
-func (ct *CustomTime) UnmarshalJSON(b []byte) (err error) {
-	str := string(b)
-	str = strings.Trim(str, "\"")
-	if str == "null" {
-		ct.Time = time.Time{}
-		return nil
-	}
-	layout := "2006-01-02 15:04:05"
-	ct.Time, err = time.Parse(layout, str)
-	return err
-}
-
-func (ct CustomTime) MarshalJSON() ([]byte, error) {
-	if ct.Time.IsZero() {
-		return []byte("null"), nil
-	}
-	formattedTime := ct.Time.Format("2006-01-02 15:04:05")
-	return []byte(`"` + formattedTime + `"`), nil
-}
-
-func (ct CustomTime) Value() (driver.Value, error) {
-	return ct.Time, nil
-}
-
-func (ct *CustomTime) Scan(value interface{}) error {
-	if value == nil {
-		ct.Time = time.Time{}
-		return nil
+func (p *Paciente) UnmarshalJSON(data []byte) error {
+	var aux struct {
+		ID        int    `json:"id"`
+		Nombre    string `json:"nombre"`
+		Apellido  string `json:"apellido"`
+		Domicilio string `json:"domicilio"`
+		Dni       string `json:"dni"`
+		// Change the type of FechaAlta to string
+		FechaAlta string `json:"fecha_alta"`
 	}
 
-	switch v := value.(type) {
-	case time.Time:
-		ct.Time = v
-	case []byte:
-		parsedTime, err := time.Parse("2006-01-02 15:04:05", string(v))
-		if err != nil {
-			return fmt.Errorf("error parsing time: %v", err)
-		}
-		ct.Time = parsedTime
-	default:
-		return fmt.Errorf("unsupported type for CustomTime: %T", value)
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
 	}
+
+	p.ID = aux.ID
+	p.Nombre = aux.Nombre
+	p.Apellido = aux.Apellido
+	p.Domicilio = aux.Domicilio
+	p.Dni = aux.Dni
+	p.FechaAlta = aux.FechaAlta
+
 	return nil
 }

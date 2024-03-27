@@ -4,9 +4,10 @@ import (
 	"final-go-back-III/internal/domain"
 	"final-go-back-III/internal/paciente"
 	"final-go-back-III/pkg/web"
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type pacienteHandler struct {
@@ -19,6 +20,13 @@ func NewPacienteHandler(s paciente.Service) *pacienteHandler {
 	}
 }
 
+// GetAll godoc
+// @Summary Get all patients
+// @Description Retrieve all patients
+// @Tags Paciente
+// @Produce json
+// @Success 200 {array} domain.Paciente "OK"
+// @Router /pacientes/all [get]
 func (h *pacienteHandler) GetAll() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		pacientes, err := h.s.GetAll()
@@ -29,6 +37,14 @@ func (h *pacienteHandler) GetAll() gin.HandlerFunc {
 	}
 }
 
+// GetByID godoc
+// @Summary Get a patient by ID
+// @Description Retrieve a patient by ID
+// @Tags Paciente
+// @Produce json
+// @Param id path int true "Patient ID"
+// @Success 200 {object} domain.Paciente "OK"
+// @Router /pacientes/{id} [get]
 func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -44,6 +60,16 @@ func (h *pacienteHandler) GetByID() gin.HandlerFunc {
 	}
 }
 
+// Create godoc
+// @Summary Create a new patient
+// @Description Create a new patient
+// @Tags Paciente
+// @Accept json
+// @Produce json
+// @Param patient body domain.Paciente true "Patient object"
+// @Param token header string true "TOKEN"
+// @Success 201 {object} domain.Paciente "Created"
+// @Router /pacientes/create [post]
 func (h *pacienteHandler) Create() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var p domain.Paciente
@@ -59,6 +85,17 @@ func (h *pacienteHandler) Create() gin.HandlerFunc {
 	}
 }
 
+// Update godoc
+// @Summary Update an existing patient
+// @Description Update an existing patient
+// @Tags Paciente
+// @Accept json
+// @Produce json
+// @Param id path int true "Patient ID"
+// @Param patient body domain.Paciente true "Patient object"
+// @Param token header string true "TOKEN"
+// @Success 200 {object} domain.Paciente "Updated"
+// @Router /pacientes/update/{id} [put]
 func (h *pacienteHandler) Update() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -78,6 +115,16 @@ func (h *pacienteHandler) Update() gin.HandlerFunc {
 	}
 }
 
+// UpdateField godoc
+// @Summary Update a specific field of a patient
+// @Description Update a specific field of a patient
+// @Tags Paciente
+// @Accept json
+// @Param id path int true "Patient ID"
+// @Param body body domain.UpdateFieldRequest true "Update Field Request"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Field updated successfully"
+// @Router /pacientes/update-field/{id} [patch]
 func (h *pacienteHandler) UpdateField() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -100,6 +147,14 @@ func (h *pacienteHandler) UpdateField() gin.HandlerFunc {
 	}
 }
 
+// Delete godoc
+// @Summary Delete a patient
+// @Description Delete a patient by ID
+// @Tags Paciente
+// @Param id path int true "Patient ID"
+// @Param token header string true "TOKEN"
+// @Success 200 {string} string "Paciente deleted successfully"
+// @Router /pacientes/delete/{id} [delete]
 func (h *pacienteHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
