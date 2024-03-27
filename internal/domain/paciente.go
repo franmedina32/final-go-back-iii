@@ -8,20 +8,20 @@ import (
 )
 
 type Paciente struct {
-	ID        int        `json:"id"`
-	Nombre    string     `json:"nombre"`
-	Apellido  string     `json:"apellido"`
-	Domicilio string     `json:"domicilio"`
-	Dni       string     `json:"dni"`
+	ID        int        `json:"id" example:"1"`
+	Nombre    string     `json:"nombre" example:"John"`
+	Apellido  string     `json:"apellido" example:"Doe"`
+	Domicilio string     `json:"domicilio" example:"123 Main St"`
+	Dni       string     `json:"dni" example:"12345678"`
 	FechaAlta CustomTime `json:"fecha_alta"`
 }
 
 type PacienteTurno struct {
 	ID        int        `json:"-"`
-	Nombre    string     `json:"nombre"`
-	Apellido  string     `json:"apellido"`
-	Domicilio string     `json:"domicilio"`
-	Dni       string     `json:"dni"`
+	Nombre    string     `json:"nombre" example:"John"`
+	Apellido  string     `json:"apellido" example:"Doe"`
+	Domicilio string     `json:"domicilio" example:"123 Main St"`
+	Dni       string     `json:"dni" example:"12345678"`
 	FechaAlta CustomTime `json:"fecha_alta"`
 }
 
