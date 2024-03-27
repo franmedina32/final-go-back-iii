@@ -120,6 +120,54 @@ const docTemplate = `{
                 }
             }
         },
+        "/odontologos/update-field/{id}": {
+            "patch": {
+                "description": "Update a specific field of an odontologo",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Odontologo"
+                ],
+                "summary": "Update a specific field of an odontologo",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Odontologo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Field Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateFieldRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "TOKEN",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field updated successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/odontologos/update/{id}": {
             "put": {
                 "description": "Update an existing odontologo",
@@ -163,63 +211,6 @@ const docTemplate = `{
                         "description": "Updated",
                         "schema": {
                             "$ref": "#/definitions/domain.Odontologo"
-                        }
-                    }
-                }
-            }
-        },
-        "/odontologos/updateField/{id}": {
-            "patch": {
-                "description": "Update a specific field of an odontologo",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Odontologo"
-                ],
-                "summary": "Update a specific field of an odontologo",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Odontologo ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Field name",
-                        "name": "field_name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "New value",
-                        "name": "value",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "TOKEN",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Field updated successfully",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }
@@ -351,6 +342,51 @@ const docTemplate = `{
                 }
             }
         },
+        "/pacientes/update-field/{id}": {
+            "patch": {
+                "description": "Update a specific field of a patient",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Paciente"
+                ],
+                "summary": "Update a specific field of a patient",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Patient ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Field Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateFieldRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "TOKEN",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field updated successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/pacientes/update/{id}": {
             "put": {
                 "description": "Update an existing patient",
@@ -394,63 +430,6 @@ const docTemplate = `{
                         "description": "Updated",
                         "schema": {
                             "$ref": "#/definitions/domain.Paciente"
-                        }
-                    }
-                }
-            }
-        },
-        "/pacientes/updateField/{id}": {
-            "patch": {
-                "description": "Update a specific field of a patient",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Paciente"
-                ],
-                "summary": "Update a specific field of a patient",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Patient ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "description": "Field name",
-                        "name": "field_name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "New value",
-                        "name": "value",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "TOKEN",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Field updated successfully",
-                        "schema": {
-                            "type": "string"
                         }
                     }
                 }
@@ -508,35 +487,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/turnos/byDNI": {
-            "get": {
-                "description": "Retrieve turnos by paciente's DNI",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Turno"
-                ],
-                "summary": "Get turnos by paciente's DNI",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Paciente DNI",
-                        "name": "dni",
-                        "in": "query",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "object"
-                        }
-                    }
-                }
-            }
-        },
         "/turnos/create": {
             "post": {
                 "description": "Create a new turno",
@@ -578,7 +528,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/turnos/createByDniAndMatricula": {
+        "/turnos/create/dni-and-matricula": {
             "post": {
                 "description": "Create a new turno by Paciente's DNI and Odontologo's Matricula",
                 "consumes": [
@@ -605,7 +555,7 @@ const docTemplate = `{
                         "type": "string",
                         "description": "TOKEN",
                         "name": "token",
-                        "in": "query",
+                        "in": "header",
                         "required": true
                     }
                 ],
@@ -614,6 +564,113 @@ const docTemplate = `{
                         "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/domain.Turno"
+                        }
+                    }
+                }
+            }
+        },
+        "/turnos/delete/{id}": {
+            "delete": {
+                "description": "Delete a turno by ID",
+                "tags": [
+                    "Turno"
+                ],
+                "summary": "Delete a turno",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Turno ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "TOKEN",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Turno deleted successfully",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/turnos/dni": {
+            "get": {
+                "description": "Retrieve turnos by paciente's DNI",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Turno"
+                ],
+                "summary": "Get turnos by paciente's DNI",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Paciente DNI",
+                        "name": "dni",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/turnos/update-field/{id}": {
+            "patch": {
+                "description": "Update a specific field of a turno by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Turno"
+                ],
+                "summary": "Update a specific field of a turno",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Turno ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Update Field Request",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/domain.UpdateFieldRequest"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "TOKEN",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Field updated successfully",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -691,124 +748,28 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
-            "delete": {
-                "description": "Delete a turno by ID",
-                "tags": [
-                    "Turno"
-                ],
-                "summary": "Delete a turno",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Turno ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "TOKEN",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Turno deleted successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/turnos/{id}/update-field": {
-            "put": {
-                "description": "Update a specific field of a turno by ID",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Turno"
-                ],
-                "summary": "Update a specific field of a turno",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Turno ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication Token",
-                        "name": "token",
-                        "in": "query",
-                        "required": true
-                    },
-                    {
-                        "description": "Name of the field to update",
-                        "name": "field_name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "New value for the field",
-                        "name": "value",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "type": "string",
-                        "description": "TOKEN",
-                        "name": "token",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Field updated successfully",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
             }
         }
     },
     "definitions": {
-        "domain.CustomTime": {
-            "type": "object",
-            "properties": {
-                "time.Time": {
-                    "type": "string"
-                }
-            }
-        },
         "domain.Odontologo": {
             "type": "object",
             "properties": {
                 "apellido": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Doe"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "matricula": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12345678"
                 },
                 "nombre": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "John"
                 }
             }
         },
@@ -828,7 +789,8 @@ const docTemplate = `{
                     "example": "123 Main St"
                 },
                 "fecha_alta": {
-                    "$ref": "#/definitions/domain.CustomTime"
+                    "type": "string",
+                    "example": "2006-01-02 15:04:05"
                 },
                 "id": {
                     "type": "integer",
@@ -844,19 +806,39 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "descripcion": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "string"
                 },
                 "fecha": {
-                    "$ref": "#/definitions/domain.CustomTime"
+                    "type": "string",
+                    "example": "2006-01-02 15:04:05"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "id_odontologo": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "id_paciente": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
+                }
+            }
+        },
+        "domain.UpdateFieldRequest": {
+            "type": "object",
+            "properties": {
+                "field_name": {
+                    "description": "Field name to update",
+                    "type": "string",
+                    "example": "name"
+                },
+                "value": {
+                    "description": "New value for the field",
+                    "type": "string",
+                    "example": "John"
                 }
             }
         },
@@ -864,16 +846,20 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "descripcion": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "string"
                 },
                 "dni": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "525424"
                 },
                 "fecha": {
-                    "$ref": "#/definitions/domain.CustomTime"
+                    "type": "string",
+                    "example": "2006-01-02 15:04:05"
                 },
                 "matricula": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "FSDFSDDFS"
                 }
             }
         }

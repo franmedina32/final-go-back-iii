@@ -13,8 +13,8 @@ type MySQLRepository struct {
 type TurnoDetail struct {
 	Paciente    domain.PacienteTurno   `json:"paciente"`
 	Odontologo  domain.OdontologoTurno `json:"odontologo"`
-	Fecha       domain.CustomTime      `json:"fecha"`
-	Descripcion string                 `json:"descripcion"`
+	Fecha       string                 `json:"fecha" example:"2006-01-02 15:04:05"`
+	Descripcion string                 `json:"descripcion" example:"string"`
 }
 
 func NewMySQLRepository(db *sql.DB) *MySQLRepository {
@@ -41,10 +41,13 @@ func (r *MySQLRepository) GetAll() ([]domain.Turno, error) {
 	var turnos []domain.Turno
 	for rows.Next() {
 		var t domain.Turno
-		err := rows.Scan(&t.Id, &t.PacienteId, &t.OdontologoId, &t.Fecha, &t.Descripcion)
+		var fecha string // Change the type to string
+		err := rows.Scan(&t.Id, &t.PacienteId, &t.OdontologoId, &fecha, &t.Descripcion)
 		if err != nil {
 			return nil, err
 		}
+		// Assign the string representation of datetime directly to Fecha
+		t.Fecha = fecha
 		turnos = append(turnos, t)
 	}
 	return turnos, nil

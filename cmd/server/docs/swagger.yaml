@@ -1,18 +1,17 @@
 definitions:
-  domain.CustomTime:
-    properties:
-      time.Time:
-        type: string
-    type: object
   domain.Odontologo:
     properties:
       apellido:
+        example: Doe
         type: string
       id:
+        example: 1
         type: integer
       matricula:
+        example: "12345678"
         type: string
       nombre:
+        example: John
         type: string
     type: object
   domain.Paciente:
@@ -27,7 +26,8 @@ definitions:
         example: 123 Main St
         type: string
       fecha_alta:
-        $ref: '#/definitions/domain.CustomTime'
+        example: "2006-01-02 15:04:05"
+        type: string
       id:
         example: 1
         type: integer
@@ -38,25 +38,45 @@ definitions:
   domain.Turno:
     properties:
       descripcion:
+        example: string
         type: string
       fecha:
-        $ref: '#/definitions/domain.CustomTime'
+        example: "2006-01-02 15:04:05"
+        type: string
       id:
+        example: 1
         type: integer
       id_odontologo:
+        example: 1
         type: integer
       id_paciente:
+        example: 1
         type: integer
+    type: object
+  domain.UpdateFieldRequest:
+    properties:
+      field_name:
+        description: Field name to update
+        example: name
+        type: string
+      value:
+        description: New value for the field
+        example: John
+        type: string
     type: object
   turnos.CreateTurnoData:
     properties:
       descripcion:
+        example: string
         type: string
       dni:
+        example: "525424"
         type: string
       fecha:
-        $ref: '#/definitions/domain.CustomTime'
+        example: "2006-01-02 15:04:05"
+        type: string
       matricula:
+        example: FSDFSDDFS
         type: string
     type: object
 info:
@@ -154,6 +174,38 @@ paths:
       summary: Delete an odontologo
       tags:
       - Odontologo
+  /odontologos/update-field/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: Update a specific field of an odontologo
+      parameters:
+      - description: Odontologo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Field Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateFieldRequest'
+      - description: TOKEN
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Field updated successfully
+          schema:
+            type: string
+      summary: Update a specific field of an odontologo
+      tags:
+      - Odontologo
   /odontologos/update/{id}:
     put:
       consumes:
@@ -184,44 +236,6 @@ paths:
           schema:
             $ref: '#/definitions/domain.Odontologo'
       summary: Update an existing odontologo
-      tags:
-      - Odontologo
-  /odontologos/updateField/{id}:
-    patch:
-      consumes:
-      - application/json
-      description: Update a specific field of an odontologo
-      parameters:
-      - description: Odontologo ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Field name
-        in: body
-        name: field_name
-        required: true
-        schema:
-          type: string
-      - description: New value
-        in: body
-        name: value
-        required: true
-        schema:
-          type: string
-      - description: TOKEN
-        in: header
-        name: token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Field updated successfully
-          schema:
-            type: string
-      summary: Update a specific field of an odontologo
       tags:
       - Odontologo
   /pacientes/{id}:
@@ -307,6 +321,36 @@ paths:
       summary: Delete a patient
       tags:
       - Paciente
+  /pacientes/update-field/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: Update a specific field of a patient
+      parameters:
+      - description: Patient ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Field Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateFieldRequest'
+      - description: TOKEN
+        in: header
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Field updated successfully
+          schema:
+            type: string
+      summary: Update a specific field of a patient
+      tags:
+      - Paciente
   /pacientes/update/{id}:
     put:
       consumes:
@@ -339,66 +383,7 @@ paths:
       summary: Update an existing patient
       tags:
       - Paciente
-  /pacientes/updateField/{id}:
-    patch:
-      consumes:
-      - application/json
-      description: Update a specific field of a patient
-      parameters:
-      - description: Patient ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Field name
-        in: body
-        name: field_name
-        required: true
-        schema:
-          type: string
-      - description: New value
-        in: body
-        name: value
-        required: true
-        schema:
-          type: string
-      - description: TOKEN
-        in: header
-        name: token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: Field updated successfully
-          schema:
-            type: string
-      summary: Update a specific field of a patient
-      tags:
-      - Paciente
   /turnos/{id}:
-    delete:
-      description: Delete a turno by ID
-      parameters:
-      - description: Turno ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: TOKEN
-        in: header
-        name: token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: Turno deleted successfully
-          schema:
-            type: string
-      summary: Delete a turno
-      tags:
-      - Turno
     get:
       description: Retrieve a turno by ID
       parameters:
@@ -417,47 +402,6 @@ paths:
       summary: Get a turno by ID
       tags:
       - Turno
-  /turnos/{id}/update-field:
-    put:
-      consumes:
-      - application/json
-      description: Update a specific field of a turno by ID
-      parameters:
-      - description: Turno ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      - description: Authentication Token
-        in: query
-        name: token
-        required: true
-        type: string
-      - description: Name of the field to update
-        in: body
-        name: field_name
-        required: true
-        schema:
-          type: string
-      - description: New value for the field
-        in: body
-        name: value
-        required: true
-        schema:
-          type: string
-      - description: TOKEN
-        in: header
-        name: token
-        required: true
-        type: string
-      responses:
-        "200":
-          description: Field updated successfully
-          schema:
-            type: string
-      summary: Update a specific field of a turno
-      tags:
-      - Turno
   /turnos/all:
     get:
       description: Retrieve all turnos
@@ -471,25 +415,6 @@ paths:
               $ref: '#/definitions/domain.Turno'
             type: array
       summary: Get all turnos
-      tags:
-      - Turno
-  /turnos/byDNI:
-    get:
-      description: Retrieve turnos by paciente's DNI
-      parameters:
-      - description: Paciente DNI
-        in: query
-        name: dni
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            type: object
-      summary: Get turnos by paciente's DNI
       tags:
       - Turno
   /turnos/create:
@@ -519,7 +444,7 @@ paths:
       summary: Create a new turno
       tags:
       - Turno
-  /turnos/createByDniAndMatricula:
+  /turnos/create/dni-and-matricula:
     post:
       consumes:
       - application/json
@@ -532,7 +457,7 @@ paths:
         schema:
           $ref: '#/definitions/turnos.CreateTurnoData'
       - description: TOKEN
-        in: query
+        in: header
         name: token
         required: true
         type: string
@@ -544,6 +469,77 @@ paths:
           schema:
             $ref: '#/definitions/domain.Turno'
       summary: Create a new turno by Paciente's DNI and Odontologo's Matricula
+      tags:
+      - Turno
+  /turnos/delete/{id}:
+    delete:
+      description: Delete a turno by ID
+      parameters:
+      - description: Turno ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: TOKEN
+        in: header
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Turno deleted successfully
+          schema:
+            type: string
+      summary: Delete a turno
+      tags:
+      - Turno
+  /turnos/dni:
+    get:
+      description: Retrieve turnos by paciente's DNI
+      parameters:
+      - description: Paciente DNI
+        in: query
+        name: dni
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      summary: Get turnos by paciente's DNI
+      tags:
+      - Turno
+  /turnos/update-field/{id}:
+    patch:
+      consumes:
+      - application/json
+      description: Update a specific field of a turno by ID
+      parameters:
+      - description: Turno ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Field Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdateFieldRequest'
+      - description: TOKEN
+        in: header
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: Field updated successfully
+          schema:
+            type: string
+      summary: Update a specific field of a turno
       tags:
       - Turno
   /turnos/update/{id}:

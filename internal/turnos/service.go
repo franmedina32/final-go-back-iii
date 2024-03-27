@@ -24,10 +24,10 @@ type service struct {
 }
 
 type CreateTurnoData struct {
-	PacienteDocNumber   string            `json:"dni"`
-	OdontologoMatricula string            `json:"matricula"`
-	Descripcion         string            `json:"descripcion"`
-	Fecha               domain.CustomTime `json:"fecha"`
+	PacienteDocNumber   string `json:"dni" example:"525424"`
+	OdontologoMatricula string `json:"matricula" example:"FSDFSDDFS"`
+	Descripcion         string `json:"descripcion" example:"string"`
+	Fecha               string `json:"fecha" example:"2006-01-02 15:04:05"`
 }
 
 func NewService(
@@ -36,24 +36,6 @@ func NewService(
 	odontologoRepo odontologo.OdontologoRepository,
 ) Service {
 	return &service{turnoRepo, pacienteRepo, odontologoRepo}
-}
-
-func (s service) CreateByDniAndMatricula(dto CreateTurnoData) (domain.Turno, error) {
-	o, err := s.odontologoRepo.GetByMat(dto.OdontologoMatricula)
-	p, err2 := s.pacienteRepo.GetByDoc(dto.PacienteDocNumber)
-	if err != nil {
-		return domain.Turno{}, err
-	}
-	if err2 != nil {
-		return domain.Turno{}, err2
-	}
-	t := domain.Turno{
-		OdontologoId: o.ID,
-		PacienteId:   p.ID,
-		Fecha:        dto.Fecha,
-		Descripcion:  dto.Descripcion,
-	}
-	return s.turnoRepo.Create(t)
 }
 
 func (s service) GetAll() ([]domain.Turno, error) {
@@ -86,6 +68,24 @@ func (s service) Create(t domain.Turno) (domain.Turno, error) {
 		return domain.Turno{}, err
 	}
 	return createdTurno, nil
+}
+
+func (s service) CreateByDniAndMatricula(dto CreateTurnoData) (domain.Turno, error) {
+	o, err := s.odontologoRepo.GetByMat(dto.OdontologoMatricula)
+	p, err2 := s.pacienteRepo.GetByDoc(dto.PacienteDocNumber)
+	if err != nil {
+		return domain.Turno{}, err
+	}
+	if err2 != nil {
+		return domain.Turno{}, err2
+	}
+	t := domain.Turno{
+		OdontologoId: o.ID,
+		PacienteId:   p.ID,
+		Fecha:        dto.Fecha,
+		Descripcion:  dto.Descripcion,
+	}
+	return s.turnoRepo.Create(t)
 }
 
 func (s service) Update(id int, t domain.Turno) (domain.Turno, error) {

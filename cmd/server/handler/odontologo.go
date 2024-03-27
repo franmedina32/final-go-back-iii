@@ -122,11 +122,10 @@ func (h *odontologoHandler) Update() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param id path int true "Odontologo ID"
-// @Param field_name body string true "Field name"
-// @Param value body string true "New value"
+// @Param body body domain.UpdateFieldRequest true "Update Field Request"
 // @Param token header string true "TOKEN"
 // @Success 200 {string} string "Field updated successfully"
-// @Router /odontologos/updateField/{id} [patch]
+// @Router /odontologos/update-field/{id} [patch]
 func (h *odontologoHandler) UpdateField() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")

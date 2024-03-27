@@ -61,7 +61,7 @@ func main() {
 		odontologos.GET("/:id", odontologoHandler.GetByID())
 		odontologos.POST("/create", middleware.Authentication(), odontologoHandler.Create())
 		odontologos.PUT("/update/:id", middleware.Authentication(), odontologoHandler.Update())
-		odontologos.PATCH("/updateField/:id", middleware.Authentication(), odontologoHandler.UpdateField())
+		odontologos.PATCH("/update-field/:id", middleware.Authentication(), odontologoHandler.UpdateField())
 		odontologos.DELETE("/delete/:id", middleware.Authentication(), odontologoHandler.Delete())
 	}
 	pacientes := r.Group("/pacientes")
@@ -70,7 +70,7 @@ func main() {
 		pacientes.GET("/:id", pacienteHandler.GetByID())
 		pacientes.POST("/create", middleware.Authentication(), pacienteHandler.Create())
 		pacientes.PUT("/update/:id", middleware.Authentication(), pacienteHandler.Update())
-		pacientes.PATCH("/updateField/:id", middleware.Authentication(), pacienteHandler.UpdateField())
+		pacientes.PATCH("/update-field/:id", middleware.Authentication(), pacienteHandler.UpdateField())
 		pacientes.DELETE("/delete/:id", middleware.Authentication(), pacienteHandler.Delete())
 	}
 	turnos := r.Group("/turnos")
@@ -79,9 +79,9 @@ func main() {
 		turnos.GET("/:id", turnoHandler.GetByID())
 		turnos.GET("/dni", turnoHandler.GetByPacienteDNI())
 		turnos.POST("/create", middleware.Authentication(), turnoHandler.Create())
-		turnos.POST("/create/dniAndMatricula", middleware.Authentication(), turnoHandler.CreateByDniAndMatricula())
+		turnos.POST("/create/dni-and-matricula", middleware.Authentication(), turnoHandler.CreateByDniAndMatricula())
 		turnos.PUT("/update/:id", middleware.Authentication(), turnoHandler.Update())
-		turnos.PATCH("/updateField/:id", middleware.Authentication(), turnoHandler.UpdateField())
+		turnos.PATCH("/update-field/:id", middleware.Authentication(), turnoHandler.UpdateField())
 		turnos.DELETE("/delete/:id", middleware.Authentication(), turnoHandler.Delete())
 
 	}

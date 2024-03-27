@@ -67,7 +67,7 @@ func (h *turnoHandler) GetByID() gin.HandlerFunc {
 // @Produce json
 // @Param dni query string true "Paciente DNI"
 // @Success 200 {object} interface{} "OK"
-// @Router /turnos/byDNI [get]
+// @Router /turnos/dni [get]
 func (h *turnoHandler) GetByPacienteDNI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		dni := c.Query("dni")
@@ -115,9 +115,9 @@ func (h *turnoHandler) Create() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Param turno body turnos.CreateTurnoData true "Turno data"
-// @Param token query string true "TOKEN"
+// @Param token header string true "TOKEN"
 // @Success 201 {object} domain.Turno "Created"
-// @Router /turnos/createByDniAndMatricula [post]
+// @Router /turnos/create/dni-and-matricula [post]
 func (h *turnoHandler) CreateByDniAndMatricula() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var t turnos.CreateTurnoData
@@ -167,12 +167,10 @@ func (h *turnoHandler) Update() gin.HandlerFunc {
 // @Tags Turno
 // @Accept json
 // @Param id path int true "Turno ID"
-// @Param token query string true "Authentication Token"
-// @Param field_name body string true "Name of the field to update"
-// @Param value body string true "New value for the field"
+// @Param body body domain.UpdateFieldRequest true "Update Field Request"
 // @Param token header string true "TOKEN"
 // @Success 200 {string} string "Field updated successfully"
-// @Router /turnos/{id}/update-field [put]
+// @Router /turnos/update-field/{id} [patch]
 func (h *turnoHandler) UpdateField() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
@@ -202,7 +200,7 @@ func (h *turnoHandler) UpdateField() gin.HandlerFunc {
 // @Param id path int true "Turno ID"
 // @Param token header string true "TOKEN"
 // @Success 200 {string} string "Turno deleted successfully"
-// @Router /turnos/{id} [delete]
+// @Router /turnos/delete/{id} [delete]
 func (h *turnoHandler) Delete() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")

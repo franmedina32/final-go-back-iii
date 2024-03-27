@@ -120,13 +120,11 @@ func (h *pacienteHandler) Update() gin.HandlerFunc {
 // @Description Update a specific field of a patient
 // @Tags Paciente
 // @Accept json
-// @Produce json
 // @Param id path int true "Patient ID"
-// @Param field_name body string true "Field name"
-// @Param value body string true "New value"
+// @Param body body domain.UpdateFieldRequest true "Update Field Request"
 // @Param token header string true "TOKEN"
 // @Success 200 {string} string "Field updated successfully"
-// @Router /pacientes/updateField/{id} [patch]
+// @Router /pacientes/update-field/{id} [patch]
 func (h *pacienteHandler) UpdateField() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		idStr := c.Param("id")
